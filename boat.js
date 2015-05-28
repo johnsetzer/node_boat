@@ -68,6 +68,9 @@ board.on("ready", function() {
       rightProp.to(rightSpeed);
       leftProp.to(leftSpeed);
       rudder.to(rudderAngle);
+
+      console.log('speed', leftSpeed, rightSpeed);
+      console.log('rudder', rudderAngle);
     }
 
     // Boat Mode
@@ -79,7 +82,7 @@ board.on("ready", function() {
       leftSpeed -= SPEED_STEP;
       leftSpeed = Math.max(leftSpeed, 0);
       leftProp.to(leftSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     } 
     else if (key.name === "down") {
       rightSpeed -= SPEED_STEP;
@@ -89,7 +92,7 @@ board.on("ready", function() {
       leftSpeed += SPEED_STEP;
       leftSpeed = Math.min(leftSpeed, 180);
       leftProp.to(leftSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     } 
     else if (key.name === "left") {
       rudderAngle += RUDDER_STEP;
@@ -109,25 +112,25 @@ board.on("ready", function() {
       leftSpeed += SPEED_STEP;
       leftSpeed = Math.min(leftSpeed, 180);
       leftProp.to(leftSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     }
     else if (key.name === "k") {
       leftSpeed -= SPEED_STEP;
       leftSpeed = Math.max(leftSpeed, 0);
       leftProp.to(leftSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     }
     else if (key.name === "o") {
       rightSpeed -= SPEED_STEP;
       rightSpeed = Math.max(rightSpeed, 0);
       rightProp.to(rightSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     } 
     else if (key.name === "l") {
       rightSpeed += SPEED_STEP;
       rightSpeed = Math.min(rightSpeed, 180);
       rightProp.to(rightSpeed);
-      console.log('speed', rightSpeed, leftSpeed);
+      console.log('speed', leftSpeed, rightSpeed);
     }
     
   });
