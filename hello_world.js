@@ -4,6 +4,8 @@ var board = new Spark({
   deviceId: process.env.SPARK_DEVICE_ID
 });
 
+console.log(process.env.SPARK_TOKEN);
+
 board.on("ready", function() {
   console.log("CONNECTED");
   this.pinMode("D7", this.MODES.OUTPUT);

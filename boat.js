@@ -2,6 +2,11 @@ var Spark = require("spark-io");
 var five = require("johnny-five");
 var keypress = require("keypress");
 
+
+console.log(process.env.SPARK_TOKEN);
+console.log(process.env.SPARK_DEVICE_ID);
+
+
 keypress(process.stdin);
 
 var board = new five.Board({
@@ -10,21 +15,20 @@ var board = new five.Board({
     deviceId: process.env.SPARK_DEVICE_ID
   })
 });
-var propellers, rudder;
+var rightProp, leftProp, rudder, rightSpeed, leftSpeed;
 
 board.on("ready", function() {
 
-  console.log("Use Up and Down arrows for CW and CCW respectively. Space to stop.");
+  console.log("Use Up, Down, Right, and Left arrows. Space to stop.");
 
-  //global
-  propellers = new five.Servo.Continuous("D0").stop();
-  //console.log('HI', propellers)
-
-  rudder = new five.Servo("D1").stop();
+  rightProp = new five.Servo.Continuous("D0").stop();
+  leftProp = new five.Servo.Continuous("D1").stop();
+  rudder = new five.Servo("A0").stop();
 
   this.repl.inject({
     rudder: rudder,
-    propellers: propellers
+    rightProp: rightProp,
+    leftProp: leftProp
   });
 
   process.stdin.resume();
@@ -33,11 +37,12 @@ board.on("ready", function() {
 
   var START_SPEED = 90; // 0 = full reverse, 90 = stopped, 180 = full ahead
   var SPEED_STEP = 15;
-  var speed = START_SPEED;
+  rightSpeed = START_SPEED;
+  leftSpeed = START_SPEED;
 
   var RUDDER_START = 90; // centered
   var RUDDER_STEP = 10;
-  var rudderAngle = RUDDER_START;
+  rudderAngle = RUDDER_START;
 
   process.stdin.on("keypress", function(ch, key) {
 
@@ -50,18 +55,26 @@ board.on("ready", function() {
     if (key.name === "q") {
       console.log("Quitting");
       process.exit();
-    } 
+    }
     else if (key.name === "up") {
-      speed += SPEED_STEP;
-      speed = Math.min(speed, 180);
-      propellers.to(speed);
-      console.log('speed', speed);
+      rightSpeed += SPEED_STEP;
+      rightSpeed = Math.min(rightSpeed, 180);
+      rightProp.to(rightSpeed);
+      
+      leftSpeed -= SPEED_STEP;
+      leftSpeed = Math.max(leftSpeed, 0);
+      leftProp.to(leftSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
     } 
     else if (key.name === "down") {
-      speed -= SPEED_STEP;
-      speed = Math.max(speed, 0);
-      propellers.to(speed);
-      console.log('speed', speed);
+      rightSpeed -= SPEED_STEP;
+      rightSpeed = Math.max(rightSpeed, 0);
+      rightProp.to(rightSpeed);
+
+      leftSpeed += SPEED_STEP;
+      leftSpeed = Math.min(leftSpeed, 180);
+      leftProp.to(leftSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
     } 
     else if (key.name === "left") {
       rudderAngle += RUDDER_STEP;
