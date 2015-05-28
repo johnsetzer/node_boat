@@ -53,21 +53,25 @@ board.on("ready", function() {
     } 
     else if (key.name === "up") {
       speed += SPEED_STEP;
+      speed = Math.min(speed, 180);
       propellers.to(speed);
       console.log('speed', speed);
     } 
     else if (key.name === "down") {
       speed -= SPEED_STEP;
+      speed = Math.max(speed, 0);
       propellers.to(speed);
       console.log('speed', speed);
     } 
     else if (key.name === "left") {
       rudderAngle += RUDDER_STEP;
+      rudderAngle = Math.min(rudderAngle, 180);
       rudder.to(rudderAngle);
       console.log('rudder', rudderAngle);
     }
     else if (key.name === "right") {
       rudderAngle -= RUDDER_STEP;
+      rudderAngle = Math.max(rudderAngle, 0);
       rudder.to(rudderAngle);
       console.log('rudder', rudderAngle);
     } 
