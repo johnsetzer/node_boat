@@ -19,7 +19,10 @@ var rightProp, leftProp, rudder, rightSpeed, leftSpeed;
 
 board.on("ready", function() {
 
-  console.log("Use Up, Down, Right, and Left arrows. Space to stop.");
+  console.log("Boat Mode: Use Up, Down, Right, and Left arrows.");
+  console.log("Tank Mode: i, o, k, l.");
+  console.log("Space to stop.");
+  console.log("q to quit.");
 
   rightProp = new five.Servo.Continuous("D0").stop();
   leftProp = new five.Servo.Continuous("D1").stop();
@@ -56,6 +59,18 @@ board.on("ready", function() {
       console.log("Quitting");
       process.exit();
     }
+    else if (key.name === "space") {
+      console.log("Stopping");
+      rightSpeed = START_SPEED;
+      leftSpeed = START_SPEED;
+      rudderAngle = RUDDER_START;
+      
+      rightProp.to(rightSpeed);
+      leftProp.to(leftSpeed);
+      rudder.to(rudderAngle);
+    }
+
+    // Boat Mode
     else if (key.name === "up") {
       rightSpeed += SPEED_STEP;
       rightSpeed = Math.min(rightSpeed, 180);
@@ -88,10 +103,31 @@ board.on("ready", function() {
       rudder.to(rudderAngle);
       console.log('rudder', rudderAngle);
     } 
-    else if (key.name === "space") {
-      console.log("Stopping");
-      propellers.stop();
-      rudder.to(RUDDER_START);
+    
+    // Tank Mode
+    else if (key.name === "i") {
+      leftSpeed += SPEED_STEP;
+      leftSpeed = Math.min(leftSpeed, 180);
+      leftProp.to(leftSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
+    }
+    else if (key.name === "k") {
+      leftSpeed -= SPEED_STEP;
+      leftSpeed = Math.max(leftSpeed, 0);
+      leftProp.to(leftSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
+    }
+    else if (key.name === "o") {
+      rightSpeed -= SPEED_STEP;
+      rightSpeed = Math.max(rightSpeed, 0);
+      rightProp.to(rightSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
+    } 
+    else if (key.name === "l") {
+      rightSpeed += SPEED_STEP;
+      rightSpeed = Math.min(rightSpeed, 180);
+      rightProp.to(rightSpeed);
+      console.log('speed', rightSpeed, leftSpeed);
     }
     
   });
